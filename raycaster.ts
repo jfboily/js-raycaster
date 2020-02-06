@@ -214,9 +214,9 @@ class RayCaster {
             //var colorAlt = WALL_COLOR[intersec.material];
 
             if(intersec.horiz) {
-                colorShaded = this.makeShadedColor(colorRaw, 0.9 * distShade);
+                colorShaded = this.makeShadedColor(colorRaw, 0.9 * distShade * 1.5);
             } else {
-                colorShaded = this.makeShadedColor(colorRaw, 1.0 * distShade);
+                colorShaded = this.makeShadedColor(colorRaw, 1.0 * distShade * 1.5);
             }
 
             this.drawVline(lineX, height, colorShaded);

@@ -73,8 +73,30 @@ class GameLoop {
     private render() {
         this.ctx.save();
 
-        this.ctx.fillStyle = "#FF00FF";
+        this.ctx.globalAlpha = 1.0;
+
+        this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, SCR_W, SCR_H);
+
+        // draw sky
+        // var grdSky = this.ctx.createLinearGradient(0,0,0, SCR_H_HALF);
+        // grdSky.addColorStop(0, "#004080");
+        // grdSky.addColorStop(1, "#cce5ff");
+
+        // // draw floor
+        // var grdFloor = this.ctx.createLinearGradient(0, SCR_H_HALF, 0, SCR_H);
+        // grdFloor.addColorStop(1, "#bf8040");
+        // grdFloor.addColorStop(0, "#261a0d");
+
+
+        // this.ctx.fillStyle = grdSky;
+        // this.ctx.fillRect(0, 0, SCR_W, SCR_H_HALF);
+
+        // this.ctx.fillStyle = grdFloor;
+        // this.ctx.fillRect(0, SCR_H_HALF, SCR_W, SCR_H);
+
+        this.ctx.fillStyle = "white";
+        this.ctx.strokeStyle = "white";
 
         // raycast!
         this.raycaster.render(this.x, this.y, this.view);
