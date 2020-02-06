@@ -13,7 +13,6 @@ class Inputs {
     }
 
     private keyDown(event: KeyboardEvent) {
-        console.log("KEY : ", event.keyCode)
         this.keyState[event.keyCode] = true;
         event.preventDefault();
     }

@@ -7,22 +7,26 @@ const WALL_COLOR = [
     "#ff9933"
 ]
 
+const SCR_W = 1024;
+const SCR_H = 768;
+const SCR_H_HALF = SCR_H / 2;
+const SCR_W_HALF = SCR_W / 2;
+
 class GameLoop {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private inputs: Inputs = new Inputs();
     private raycaster: RayCaster;
 
-    private x = 315;
-    private y = 235;
-    private view = 0.0;
+    private x = 800;
+    private y = 700;
+    private view = 5.0;
 
     constructor() {
         // main canvas (screen)
         this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
         this.raycaster = new RayCaster(leveldata, this.ctx);
-        console.log(this.raycaster);
     }
 
      public mainLoop() {
@@ -69,20 +73,15 @@ class GameLoop {
     private render() {
         this.ctx.save();
 
-        this.ctx.fillStyle = "#000000";
-        this.ctx.fillRect(0, 0, 640, 480);
-
-        this.drawLevel();
+        this.ctx.fillStyle = "#FF00FF";
+        this.ctx.fillRect(0, 0, SCR_W, SCR_H);
 
         // raycast!
         this.raycaster.render(this.x, this.y, this.view);
 
 
-        // draw player
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI, false);
-        this.ctx.fillStyle = "#ff00ff";
-        this.ctx.fill()
+        // draw minimap
+        this.drawLevel();
 
         this.ctx.restore();
     }
@@ -110,16 +109,30 @@ class GameLoop {
     private drawLevel() {
         var j: number;
         var i: number;
-        for(j=0; j < 480; j+=32) {
-            for(i=0; i<640; i+=32) {
+        for(j=0; j < SCR_H; j+=32) {
+            for(i=0; i<SCR_W; i+=32) {
                 var wall = this.raycaster.getDataAt(i,j);
 
                 if(wall != 0) {
                     this.ctx.fillStyle = WALL_COLOR[wall];
-                    this.ctx.fillRect(i, j, 32, 32);
+                    this.ctx.fillRect(i/4, j/4, 8, 8);
                 }
             }
         }
+
+        // draw player
+        this.ctx.beginPath();
+        this.ctx.arc(this.x / 4, this.y / 4, 2, 0, 2 * Math.PI, false);
+        this.ctx.fillStyle = "blue";
+        this.ctx.fill();
+
+        // draw player direction
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = "yellow"
+        this.ctx.moveTo(this.x / 4, this.y / 4);
+        this.ctx.lineTo((this.x / 4) + (8 * Math.cos(this.view)), (this.y / 4) + (8 * Math.sin(this.view)))
+        this.ctx.stroke();
+
     }
 
 }
