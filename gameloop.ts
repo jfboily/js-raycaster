@@ -12,6 +12,9 @@ const SCR_H = 768;
 const SCR_H_HALF = SCR_H / 2;
 const SCR_W_HALF = SCR_W / 2;
 
+const HUD_X = SCR_W - (SCR_W / 4);
+const HUD_Y = SCR_H - (SCR_H / 4);
+
 class GameLoop {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
@@ -129,6 +132,8 @@ class GameLoop {
     }
 
     private drawLevel() {
+        this.ctx.fillStyle = "black";
+        this.ctx.fillRect(HUD_X, HUD_Y, HUD_X + (SCR_W / 4), HUD_Y + (SCR_H / 4));
         var j: number;
         var i: number;
         for(j=0; j < SCR_H; j+=32) {
@@ -137,22 +142,23 @@ class GameLoop {
 
                 if(wall != 0) {
                     this.ctx.fillStyle = WALL_COLOR[wall];
-                    this.ctx.fillRect(i/4, j/4, 8, 8);
+                    this.ctx.fillRect(HUD_X + (i/4), HUD_Y + (j/4), 8, 8);
                 }
             }
         }
 
         // draw player
         this.ctx.beginPath();
-        this.ctx.arc(this.x / 4, this.y / 4, 2, 0, 2 * Math.PI, false);
-        this.ctx.fillStyle = "blue";
+        this.ctx.arc(HUD_X + (this.x / 4), HUD_Y + (this.y / 4), 3, 0, 2 * Math.PI, false);
+        this.ctx.fillStyle = "yellow";
         this.ctx.fill();
 
         // draw player direction
         this.ctx.beginPath();
-        this.ctx.strokeStyle = "yellow"
-        this.ctx.moveTo(this.x / 4, this.y / 4);
-        this.ctx.lineTo((this.x / 4) + (8 * Math.cos(this.view)), (this.y / 4) + (8 * Math.sin(this.view)))
+        this.ctx.strokeStyle = "yellow";
+        this.ctx.lineWidth = 2;
+        this.ctx.moveTo(HUD_X + (this.x / 4), HUD_Y + (this.y / 4));
+        this.ctx.lineTo(HUD_X + (this.x / 4) + (8 * Math.cos(this.view)), HUD_Y + (this.y / 4) + (8 * Math.sin(this.view)))
         this.ctx.stroke();
 
     }
